@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hani — vidadepiratas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0B3142;
+    --navy-deep: #082431;
+    --sage: #5EAA8C;
+    --sand: #E8DCC8;
+    --coral: #E8735C;
+    --cream: #F5F2EA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: radial-gradient(circle at 50% 0%, var(--navy) 0%, var(--navy-deep) 70%);
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--cream);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 64px 20px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* contour / route lines in background, like map depth lines */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-radial-gradient(circle at 20% 15%, transparent 0, transparent 40px, rgba(94,170,140,0.05) 41px, transparent 42px),
+      repeating-radial-gradient(circle at 85% 80%, transparent 0, transparent 55px, rgba(232,115,92,0.04) 56px, transparent 57px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card {
+    position: relative;
+    z-index: 1;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .stamp {
+    width: 92px;
+    height: 92px;
+    margin: 0 auto 28px;
+    border: 2px dashed var(--sand);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    transform: rotate(-6deg);
+    background: rgba(232, 220, 200, 0.04);
+  }
+
+  h1 {
+    font-family: 'Spectral', serif;
+    font-weight: 600;
+    font-size: 34px;
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+  }
+
+  .tagline {
+    font-size: 15px;
+    color: var(--sand);
+    opacity: 0.9;
+    margin-bottom: 40px;
+    line-height: 1.5;
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  a.link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: 10px;
+    background: rgba(245, 242, 234, 0.05);
+    border: 1px solid rgba(232, 220, 200, 0.25);
+    text-decoration: none;
+    color: var(--cream);
+    font-size: 15px;
+    font-weight: 500;
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    text-align: left;
+  }
+
+  a.link:hover {
+    transform: translateY(-2px);
+    border-color: var(--sage);
+    background: rgba(94, 170, 140, 0.12);
+  }
+
+  a.link .icon {
+    font-size: 20px;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  a.link .label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  a.link .label .sub {
+    font-size: 12px;
+    color: var(--sand);
+    opacity: 0.7;
+    font-weight: 400;
+  }
+
+  .route {
+    margin-top: 44px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage);
+    opacity: 0.8;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="stamp">🌊</div>
+    <h1>Hani</h1>
+    <p class="tagline">Bióloga | Viajo y te cuento lo que veo</p>
+
+    <div class="links">
+      <a class="link" href="https://www.threads.com/@vidadepiratas" target="_blank" rel="noopener">
+        <span class="icon">🧵</span>
+        <span class="label">Threads<span class="sub">@vidadepiratas</span></span>
+      </a>
+      <a class="link" href="mailto:Whyx.plus@gmail.com">
+        <span class="icon">✉️</span>
+        <span class="label">Contacto<span class="sub">Whyx.plus@gmail.com</span></span>
+      </a>
+    </div>
+
+    <p class="route">◦ próxima parada: por definir ◦</p>
+  </div>
+</body>
+</html>
