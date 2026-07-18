@@ -3,160 +3,421 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hani — vidadepiratas</title>
+<title>@vidadepiratas — Diario de a bordo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Patrick+Hand&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --navy: #0B3142;
-    --navy-deep: #082431;
-    --sage: #5EAA8C;
-    --sand: #E8DCC8;
-    --coral: #E8735C;
-    --cream: #F5F2EA;
+  :root{
+    --ink:#0B2B2E;
+    --paper:#A9C4B9;
+    --paper-dim:#98B4A7;
+    --moss:#2F8FA0;
+    --coral:#2065A0;
+    --sea:#123354;
+    --text:#12314F;
+    --line: rgba(10,35,56,0.16);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *{box-sizing:border-box;}
+  html{-webkit-tap-highlight-color:transparent;}
 
-  body {
-    min-height: 100vh;
-    background: radial-gradient(circle at 50% 0%, var(--navy) 0%, var(--navy-deep) 70%);
-    font-family: 'IBM Plex Sans', sans-serif;
-    color: var(--cream);
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 64px 20px;
-    position: relative;
-    overflow-x: hidden;
-  }
-
-  /* contour / route lines in background, like map depth lines */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
+  body{
+    margin:0;
+    background:var(--ink);
     background-image:
-      repeating-radial-gradient(circle at 20% 15%, transparent 0, transparent 40px, rgba(94,170,140,0.05) 41px, transparent 42px),
-      repeating-radial-gradient(circle at 85% 80%, transparent 0, transparent 55px, rgba(232,115,92,0.04) 56px, transparent 57px);
-    pointer-events: none;
-    z-index: 0;
+      radial-gradient(ellipse at 15% 0%, rgba(47,143,160,0.28), transparent 55%),
+      radial-gradient(ellipse at 85% 15%, rgba(18,51,84,0.45), transparent 55%);
+    color:var(--paper);
+    font-family:'Work Sans', sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding: 56px 20px 80px;
+    position:relative;
+    overflow-x:hidden;
   }
 
-  .card {
-    position: relative;
-    z-index: 1;
-    max-width: 420px;
-    width: 100%;
-    text-align: center;
+  .waves{
+    position:fixed;
+    left:0; right:0; bottom:0;
+    height:180px;
+    pointer-events:none;
+    opacity:0.5;
+    z-index:0;
+  }
+  .waves svg{width:220%; height:100%;}
+  .waves .w1{animation: drift 26s linear infinite;}
+  .waves .w2{animation: drift 40s linear infinite reverse; opacity:.6;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
   }
 
-  .stamp {
-    width: 92px;
-    height: 92px;
-    margin: 0 auto 28px;
-    border: 2px dashed var(--sand);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 40px;
-    transform: rotate(-6deg);
-    background: rgba(232, 220, 200, 0.04);
+  .sheet{
+    width:100%;
+    max-width:440px;
+    position:relative;
+    z-index:1;
   }
 
-  h1 {
-    font-family: 'Spectral', serif;
-    font-weight: 600;
-    font-size: 34px;
-    letter-spacing: 0.02em;
-    margin-bottom: 10px;
+  /* header */
+  .mark{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--moss);
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    margin-bottom:18px;
+    opacity:0;
+    animation: rise .6s ease forwards;
+  }
+  .mark .dot{width:6px;height:6px;border-radius:50%;background:var(--coral);flex:none;}
+  .mark::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:rgba(241,236,219,0.18);
   }
 
-  .tagline {
-    font-size: 15px;
-    color: var(--sand);
-    opacity: 0.9;
-    margin-bottom: 40px;
-    line-height: 1.5;
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(34px, 9vw, 44px);
+    line-height:1.05;
+    margin:0 0 10px;
+    letter-spacing:-0.01em;
+    opacity:0;
+    animation: rise .6s ease .08s forwards;
+  }
+  h1 em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--coral);
   }
 
-  .links {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+  .role{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    letter-spacing:.08em;
+    color:rgba(241,236,219,0.55);
+    margin:0 0 4px;
+    opacity:0;
+    animation: rise .6s ease .14s forwards;
   }
 
-  a.link {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 20px;
-    border-radius: 10px;
-    background: rgba(245, 242, 234, 0.05);
-    border: 1px solid rgba(232, 220, 200, 0.25);
-    text-decoration: none;
-    color: var(--cream);
-    font-size: 15px;
-    font-weight: 500;
-    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
-    text-align: left;
+  .bio-list{
+    list-style:none;
+    margin: 0 0 40px;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .bio-list li{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:17px;
+    letter-spacing:0;
+    color:rgba(241,236,219,0.88);
+    opacity:0;
+    animation: rise .55s ease forwards;
+  }
+  .bio-list li:nth-child(1){animation-delay:.2s;}
+  .bio-list li:nth-child(2){animation-delay:.26s;}
+  .bio-list li:nth-child(3){animation-delay:.32s;}
+  .bio-list .sep{color:var(--coral); margin:0 2px;}
+  .bio-list .emoji{
+    display:inline-block;
+    filter:saturate(1.15);
+  }
+  .bio-list li:nth-child(1) .emoji:last-child{
+    animation: peek 2.6s ease-in-out .9s infinite;
   }
 
-  a.link:hover {
-    transform: translateY(-2px);
-    border-color: var(--sage);
-    background: rgba(94, 170, 140, 0.12);
+  /* index trail */
+  .trail{
+    position:relative;
+    padding-left:26px;
+  }
+  .trail::before{
+    content:"";
+    position:absolute;
+    left:6px;
+    top:8px;
+    bottom:8px;
+    width:1px;
+    background-image: linear-gradient(rgba(241,236,219,0.28) 60%, transparent 0%);
+    background-size: 1px 8px;
+    background-repeat: repeat-y;
   }
 
-  a.link .icon {
-    font-size: 20px;
-    width: 24px;
-    text-align: center;
-    flex-shrink: 0;
+  .plate{
+    position:relative;
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    background:var(--paper);
+    color:var(--text);
+    border-radius:20px;
+    padding:20px 20px 18px;
+    margin-bottom:14px;
+    opacity:0;
+    animation: rise .55s ease forwards;
+    transition: transform .25s ease, box-shadow .25s ease;
+    box-shadow: 0 4px 14px rgba(5,18,30,0.28);
+  }
+  .plate:nth-of-type(1){animation-delay:.3s;}
+  .plate:nth-of-type(2){animation-delay:.38s;}
+  .plate:nth-of-type(3){animation-delay:.46s;}
+  .plate:nth-of-type(4){animation-delay:.54s;}
+
+  .plate::before{
+    content:"";
+    position:absolute;
+    left:-26px;
+    top:26px;
+    width:11px;
+    height:1px;
+    background:rgba(241,236,219,0.28);
+  }
+  .plate::after{
+    content:"";
+    position:absolute;
+    left:-30px;
+    top:22px;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--ink);
+    border:1px solid var(--moss);
   }
 
-  a.link .label {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+  a.plate:hover, a.plate:focus-visible{
+    transform: translateX(4px);
+    box-shadow: -3px 5px 0 rgba(5,18,30,0.35);
+  }
+  a.plate:focus-visible{
+    outline:2px solid var(--coral);
+    outline-offset:2px;
   }
 
-  a.link .label .sub {
-    font-size: 12px;
-    color: var(--sand);
-    opacity: 0.7;
-    font-weight: 400;
+  .plate-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:6px;
+  }
+  .plate-no{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    color:var(--moss);
+  }
+  .plate-tag{
+    font-family:'Space Mono', monospace;
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:rgba(18,49,79,0.45);
+  }
+  .plate-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:21px;
+    margin:0 0 4px;
+  }
+  .plate-desc{
+    font-size:13.5px;
+    line-height:1.45;
+    color:rgba(18,49,79,0.7);
+    margin:0;
+  }
+  .plate-arrow{
+    position:absolute;
+    right:18px;
+    bottom:16px;
+    font-family:'Space Mono', monospace;
+    font-size:14px;
+    color:var(--coral);
   }
 
-  .route {
-    margin-top: 44px;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--sage);
-    opacity: 0.8;
+  /* pending state */
+  .plate.pending{
+    background:transparent;
+    border:1px dashed rgba(241,236,219,0.3);
+    color:rgba(241,236,219,0.9);
+    cursor:default;
+  }
+  .plate.pending .plate-no{color:rgba(241,236,219,0.4);}
+  .plate.pending .plate-tag{color:rgba(241,236,219,0.4);}
+  .plate.pending .plate-desc{color:rgba(241,236,219,0.55);}
+  .plate.pending::after{background:var(--ink); border-color:rgba(241,236,219,0.3);}
+  .plate.pending .plate-arrow{color:rgba(241,236,219,0.4);}
+
+  footer{
+    margin-top:38px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Space Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    color:rgba(241,236,219,0.38);
+    opacity:0;
+    animation: rise .6s ease .68s forwards;
+  }
+  footer::before{
+    content:"";
+    flex:none;
+    width:16px;
+    height:1px;
+    background:rgba(241,236,219,0.28);
+  }
+
+  @keyframes rise{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  @keyframes peek{
+    0%, 100%{transform:rotate(0deg) translateY(0);}
+    50%{transform:rotate(-8deg) translateY(-2px);}
+  }
+
+  @keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+  }
+
+  @keyframes drift{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+
+  .grain{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay;
+  }
+
+  .stamp{
+    position:absolute;
+    top:-8px;
+    right:6px;
+    width:64px;
+    height:64px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    animation: rise .6s ease .5s forwards;
+  }
+  .stamp svg{
+    width:100%;
+    height:100%;
+    animation: spin 22s linear infinite;
+  }
+  .stamp-emoji{
+    position:absolute;
+    font-size:18px;
+    filter: brightness(0);
   }
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="stamp">🌊</div>
-    <h1>Hani</h1>
-    <p class="tagline">Bióloga | Viajo y te cuento lo que veo</p>
 
-    <div class="links">
-      <a class="link" href="https://www.threads.com/@vidadepiratas" target="_blank" rel="noopener">
-        <span class="icon">🧵</span>
-        <span class="label">Threads<span class="sub">@vidadepiratas</span></span>
-      </a>
-      <a class="link" href="mailto:Whyx.plus@gmail.com">
-        <span class="icon">✉️</span>
-        <span class="label">Contacto<span class="sub">Whyx.plus@gmail.com</span></span>
-      </a>
-    </div>
-
-    <p class="route">◦ próxima parada: por definir ◦</p>
+  <div class="waves" aria-hidden="true">
+    <svg class="w1" viewBox="0 0 2200 200" preserveAspectRatio="none">
+      <path d="M0,100 C150,150 300,50 450,100 C600,150 750,50 900,100 C1050,150 1200,50 1350,100 C1500,150 1650,50 1800,100 C1950,150 2100,50 2200,100 L2200,200 L0,200 Z" fill="#123354" opacity="0.55"/>
+    </svg>
+    <svg class="w2" viewBox="0 0 2200 200" preserveAspectRatio="none" style="margin-top:-60px;">
+      <path d="M0,120 C150,70 300,160 450,120 C600,70 750,160 900,120 C1050,70 1200,160 1350,120 C1500,70 1650,160 1800,120 C1950,70 2100,160 2200,120 L2200,200 L0,200 Z" fill="#2F8FA0" opacity="0.35"/>
+    </svg>
   </div>
+
+
+  <div class="sheet">
+
+    <div class="mark"><span class="dot"></span> Diario de a bordo</div>
+
+    <div style="position:relative;">
+      <h1>Vida de<br><em>Piratas</em></h1>
+      <div class="stamp" aria-hidden="true">
+        <svg viewBox="0 0 100 100">
+          <defs>
+            <path id="circlePath" d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0"/>
+          </defs>
+          <circle cx="50" cy="50" r="30" fill="var(--paper)" opacity="0.13"/>
+          <circle cx="50" cy="50" r="48" fill="none" stroke="var(--coral)" stroke-width="1.2" stroke-dasharray="2 4"/>
+          <text font-family="'Space Mono', monospace" font-size="8.2" letter-spacing="2" fill="var(--paper)">
+            <textPath href="#circlePath" startOffset="0%">EXPLORA • OBSERVA • CUENTA •</textPath>
+          </text>
+        </svg>
+        <span class="stamp-emoji">⛵</span>
+      </div>
+    </div>
+    <p class="role">@vidadepiratas</p>
+    <ul class="bio-list">
+      <li><span class="emoji">🎒</span> Mochilera &amp; Científica <span class="emoji">👀</span></li>
+      <li><span class="emoji">🌿</span> Viajes <span class="sep">•</span> Naturaleza <span class="sep">•</span> Ciencia</li>
+      <li><span class="emoji">😎</span> Chismecitos ocasionales</li>
+    </ul>
+
+    <nav class="trail">
+
+      <a class="plate" href="https://instagram.com/vidadepiratas" target="_blank" rel="noopener">
+        <div class="plate-top">
+          <span class="plate-no">BOTÍN 01</span>
+          <span class="plate-tag">Instagram</span>
+        </div>
+        <h2 class="plate-title">Sígueme el rastro</h2>
+        <p class="plate-desc">Fotos, historias de campo y bitácora visual de viajes.</p>
+        <span class="plate-arrow">↗</span>
+      </a>
+
+      <a class="plate" href="https://threads.net/@vidadepiratas" target="_blank" rel="noopener">
+        <div class="plate-top">
+          <span class="plate-no">BOTÍN 02</span>
+          <span class="plate-tag">Threads</span>
+        </div>
+        <h2 class="plate-title">Notas y pensamientos</h2>
+        <p class="plate-desc">Datos curiosos, opiniones y conversación diaria.</p>
+        <span class="plate-arrow">↗</span>
+      </a>
+
+      <a class="plate" href="https://zavalaby16.github.io/urbanseed/" target="_blank" rel="noopener">
+        <div class="plate-top">
+          <span class="plate-no">BOTÍN 03</span>
+          <span class="plate-tag">Proyecto</span>
+        </div>
+        <h2 class="plate-title">UrbanSeed</h2>
+        <p class="plate-desc">La app que te dice qué cultivar según tu espacio y tu ciudad.</p>
+        <span class="plate-arrow">↗</span>
+      </a>
+
+      <div class="plate pending">
+        <div class="plate-top">
+          <span class="plate-no">BOTÍN 04</span>
+          <span class="plate-tag">Tienda</span>
+        </div>
+        <h2 class="plate-title">Guías &amp; recursos</h2>
+        <p class="plate-desc">Próximamente — mis guías descargables llegan por aquí.</p>
+        <span class="plate-arrow">⋯</span>
+      </div>
+
+    </nav>
+
+    <footer>Hecho a mano, con trabajo de campo</footer>
+
+  </div>
+
 </body>
 </html>
